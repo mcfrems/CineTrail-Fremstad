@@ -1,0 +1,5 @@
+.homepage-container {
+    color: var(--white);
+    margin-top: var(--header-height);
+    min-height: 90vh;
+}
