@@ -3,3 +3,8 @@
     margin-top: var(--header-height);
     min-height: 90vh;
 }
+
+.homepage-light{
+    background-color: var(--white);
+    color: black;
+}
