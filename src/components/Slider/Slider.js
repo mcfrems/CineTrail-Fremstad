@@ -2,6 +2,7 @@ import React from 'react'
 import "./Slider.css"
 import axios from "axios"
 import {MdKeyboardArrowRight, MdKeyboardArrowLeft} from 'react-icons/md'
+import Rating from '../Rating/Rating';
 
 function Slider() {
 
@@ -72,6 +73,7 @@ function Slider() {
             <p>{upcomingMovies[index]?.overview?.slice(0, 120)}...</p>
             <p>Genres</p>
             <p>Release Date: {upcomingMovies[index]?.release_date}</p>
+            <Rating />
             <p>Rating: {upcomingMovies[index]?.vote_average}</p>
             <p>See Details</p>
         </div>
