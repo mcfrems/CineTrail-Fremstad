@@ -2,3 +2,10 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.page-numbers {
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+    cursor: pointer;
+}

@@ -1,6 +1,7 @@
 import React from 'react'
 import "./MovieCard.css"
 import Rating from '../Rating/Rating';
+import {Link} from 'react-router-dom'
 
 function MovieCard({movie, imageUrl, imgHeight, radius, cardStyle}) {
     const imageBase = process.env.REACT_APP_IMAGE_BASE;
@@ -15,13 +16,12 @@ function MovieCard({movie, imageUrl, imgHeight, radius, cardStyle}) {
         backgroundSize: "cover",
         backgroundPosition: "center",
         position: "relative", //needed to use absolute on other stuff
-
     }   
-
 
   return (
     // <div className='movie-card'>
-    <div className={cardStyle}>
+    <Link className={cardStyle} 
+        to={`/moviedetails/${movie?.id}`}>
         <div style={imageStyle}>
             <div className="movie-info-top">
                 <p>{movie.vote_average}</p>
@@ -37,7 +37,7 @@ function MovieCard({movie, imageUrl, imgHeight, radius, cardStyle}) {
                 null
             }
         </div>
-    </div>
+    </Link>
   )
 }
 
