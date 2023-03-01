@@ -67,7 +67,7 @@ function MovieDetails() {
 
         axios.get(`${baseUrl}/movie/${movieId}/reviews?api_key=${apiKey}`)
         .then(res=>{
-            console.log(res.data.results)
+            //console.log(res.data.results)
             setReviews(res.data.results)
             setTotalReviews(res.data.total_results)
         })

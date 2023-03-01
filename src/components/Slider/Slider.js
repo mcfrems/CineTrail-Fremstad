@@ -89,7 +89,7 @@ function Slider() {
         <div className="slider-movie-info">
             <h1>{upcomingMovies[index]?.original_title}</h1>
             <p>{upcomingMovies[index]?.overview?.slice(0, 120)}...</p>
-            <Genres />
+            <Genres movieGenres={upcomingMovies[index]?.genre_ids} />
             <p>Release Date: {upcomingMovies[index]?.release_date}</p>
             <Rating stars={currentRating}/>
             <p>Rating: {upcomingMovies[index]?.vote_average}</p>
