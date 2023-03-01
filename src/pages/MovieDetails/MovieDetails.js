@@ -3,6 +3,9 @@ import "./MovieDetails.css"
 import {useParams} from 'react-router-dom'
 import axios from 'axios';
 import ReactPlayer from 'react-player';
+import Review from '../../components/Review/Review';
+import Rating from '../../components/Rating/Rating';
+
 
 function MovieDetails() {
 
@@ -19,6 +22,15 @@ function MovieDetails() {
     //create state for video link
     const [videoLink, setVideoLink] = React.useState('')
     const [movie, setMovie] = React.useState()
+    const [rating, setRating] = React.useState()
+
+    //create state for reviews
+    const [reviews, setReviews] = React.useState([])
+
+    //state for number of reviews showing
+    const [reviewNumber, setReviewNumber] = React.useState(3)
+    const [totalReviews, setTotalReviews] = React.useState(0)
+
     //gives me movie details
         // ${baseUrl}/movie/${movieId}?api_key=${apiKey}
 
@@ -44,10 +56,23 @@ function MovieDetails() {
         //make api call to get movie ifo
         axios.get(`${baseUrl}/movie/${movieId}?api_key=${apiKey}`)
         .then(res => {
-            console.log(res.data)
+            //console.log(res.data)
             setMovie(res.data)
+            setRating(res.data.vote_average/2)
         })
         .catch(err => console.log(err))
+
+        //api call to get reviews
+        //${baseUrl}/movie/${movieId}/reviews?api_key=${apiKey}
+
+        axios.get(`${baseUrl}/movie/${movieId}/reviews?api_key=${apiKey}`)
+        .then(res=>{
+            console.log(res.data.results)
+            setReviews(res.data.results)
+            setTotalReviews(res.data.total_results)
+        })
+        .catch(err => console.log(err))
+
     }, []
 )
 
@@ -75,7 +100,8 @@ function MovieDetails() {
         }
         <div className='title-container'>
             <h2>{movie?.title}</h2>
-            </div>
+        </div>
+        <Rating stars={rating}/>
         <div className='info-container'>
             <img src={`${imageBase}/${movie?.poster_path}`}
                 className="details-poster" />
@@ -88,8 +114,16 @@ function MovieDetails() {
             </div>
         </div>
         <div className='review-container'>
-            Reviews
+            {
+                reviews.slice(0, reviewNumber).map(item =><Review review={item}/>)
+            }
         </div>
+        {
+            reviewNumber <= totalReviews ?
+        <p onClick={()=>setReviewNumber(reviewNumber + 3)}>Read more reviews</p>
+        :
+        <p onClick={()=>setReviewNumber(3)}>End of reviews</p>
+        }
     </div>
   )
 }

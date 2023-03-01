@@ -28,7 +28,7 @@ function MovieCard({movie, imageUrl, imgHeight, radius, cardStyle}) {
             </div>
             <div className='movie-info-bottom'>
                 <p>{movie.original_title}</p>
-                <Rating />
+                <Rating stars={movie?.vote_average/2}/>
             </div>
             {
                 cardStyle==="top-rated-card"?
