@@ -66,3 +66,40 @@
     display: flex;
     align-items: center;
 }
+
+
+.profile-container{
+    color:white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+.profile-img{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile-options{
+    position: absolute;
+    top:var(--header-height);
+    right:0;
+    width:130px;
+    background-color: var(--dark-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding:5px 0;
+}
+.profile-options a{
+    color:var(--white);
+    cursor:pointer;
+}
+
+.logout{
+    color: red;
+    cursor: pointer;
+}
