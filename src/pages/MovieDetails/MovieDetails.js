@@ -5,6 +5,8 @@ import axios from 'axios';
 import ReactPlayer from 'react-player';
 import Review from '../../components/Review/Review';
 import Rating from '../../components/Rating/Rating';
+import { UserContext } from '../../contexts/UserContext';
+
 
 
 function MovieDetails() {
@@ -12,6 +14,9 @@ function MovieDetails() {
     const apiKey = process.env.REACT_APP_API_KEY;
     const baseUrl = process.env.REACT_APP_BASE_URL;
     const imageBase = process.env.REACT_APP_IMAGE_BASE;
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+    const {user, setUser, token, setToken} = React.useContext(UserContext);
 
     //I need to show info about a specific movie
     //what movie?
@@ -31,10 +36,33 @@ function MovieDetails() {
     const [reviewNumber, setReviewNumber] = React.useState(3)
     const [totalReviews, setTotalReviews] = React.useState(0)
 
+    //state for favorites
+    const [added, setAdded] = React.useState(false)
+
     //gives me movie details
         // ${baseUrl}/movie/${movieId}?api_key=${apiKey}
 
         // ${baseUrl}/movie/${movieId}/videos?api_key=${apiKey}
+
+    //to set added properly
+    React.useEffect(
+        ()=>{
+            //check if this movie has already been added
+            axios.post(`${serverUrl}/favoriteMovies/Search`, 
+            {
+                user_id: user?._id, 
+                tmdb_id: movieId
+            })
+            .then(res =>{
+                console.log("search result: ")
+                console.log(res)
+                if(res.data){
+                    setAdded(true)
+                }
+            })
+            .catch(err => console.log(err))
+        }, [user]
+    )
 
     React.useEffect(
     ()=>{
@@ -76,6 +104,36 @@ function MovieDetails() {
     }, []
 )
 
+
+    const addToFavorites = () =>{
+        console.log("add")
+        //need movie id and user id 
+        console.log("movie id is ", movieId)
+        console.log("user id is ", user._id)
+        //make api call to save favorites
+        axios.post(`${serverUrl}/favoriteMovies`, {
+            movie_id: movieId,
+            user_id: user._id
+        })
+        .then(res =>{
+            console.log(res)
+            //mark as "added"
+            setAdded(true)
+        })
+        .catch(err => console.log(err))
+    }
+
+    const removeFromFavorites = () =>{
+        console.log("remove")
+        //make delete request
+        axios.delete(`${serverUrl}/favoriteMovies/${user._id}/${movieId}`)
+        .then(res => {
+            console.log(res)
+            setAdded(false)
+        })
+        .catch(err => console.log(err))
+    }
+
   return (
     <div className='details-container'>
         {
@@ -100,6 +158,19 @@ function MovieDetails() {
         }
         <div className='title-container'>
             <h2>{movie?.title}</h2>
+            {
+                token?
+                <div>
+                {
+                    added?
+                    <button className="btn-remove" onClick={removeFromFavorites}>Remove from favorites</button>
+                    :
+                    <button className="btn-add" onClick={addToFavorites}>Add to favorites</button>
+                }
+                </div>
+                :
+                null
+            }
         </div>
         <Rating stars={rating}/>
         <div className='info-container'>

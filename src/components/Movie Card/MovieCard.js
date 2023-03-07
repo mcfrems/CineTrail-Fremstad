@@ -21,7 +21,8 @@ function MovieCard({movie, imageUrl, imgHeight, radius, cardStyle}) {
   return (
     // <div className='movie-card'>
     <Link className={cardStyle} 
-        to={`/moviedetails/${movie?.id}`}>
+        to={movie._id?  `/moviedetails/${movie?.tmdb_id}`:
+        `/moviedetails/${movie?.id}`}>
         <div style={imageStyle}>
             <div className="movie-info-top">
                 <p>{movie.vote_average}</p>
