@@ -8,6 +8,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 2;
 }
 
 .header-light{
@@ -19,6 +20,22 @@
     color: var(--red);
     font-size: 2rem;
     font-weight: bold;
+}
+
+.search-container{
+    position: relative;
+    width: 40%; 
+    color: white;
+
+}
+
+.search-results-container{
+    background-color:var(--dark-bg);
+    position: absolute;
+    top: 30px;
+    left: 0;
+    height: 300px;
+    width: 100%;
 }
 
 .search-input{
@@ -103,3 +120,15 @@
     color: red;
     cursor: pointer;
 }
+
+.search-link{
+    color: black;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-link img{
+    height: 50px;
+    width: 50px;
+}
+

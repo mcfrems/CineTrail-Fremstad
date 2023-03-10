@@ -5,11 +5,20 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import SearchResult from '../SearchResult/SearchResult';
 
 
 function Header() {
     //active use Navigate
     const navigate = useNavigate();
+
+    const apiKey = process.env.REACT_APP_API_KEY;
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+
+    //create state for search
+    const [query, setQuery] = React.useState("")
+    const [queryResults, setQueryResults] = React.useState([])
 
     const [profileOptions, setProfileOptions] = React.useState(false);
 
@@ -35,11 +44,39 @@ function Header() {
         navigate("/")
     }
 
+    //{baseUrl}/search/movie?api_key={apiKey}&query={}
+
+    const handleSearch = (e) => {
+        //console.log("search")
+        //store use input in state
+        setQuery(e.target.value)
+        //make api call to get matching movies
+        axios.get(`${baseUrl}/search/movie?api_key=${apiKey}&query=${e.target.value}`)
+        .then(res =>{
+            console.log(res.data.results)
+            //store results 
+            setQueryResults(res.data.results.slice(0, 6))
+        })
+        .catch(err => console.log(err))
+    }
+
   return (
     <div className={darkMode? "header-container":"header-container header-light"}>
         <a href="/" className="logo">CineTrail</a>
         <div className="search-container">
-            <input placeholder="Search movies" />
+            <input placeholder="Search movies" 
+            className="search-input"
+            onChange = {handleSearch} />
+            {
+                query? 
+                <div className="search-results-container">
+                    {
+                        queryResults.map(item => <SearchResult movie={item}/>)
+                    }
+                </div>
+                :
+                null
+            }
         </div>
         <div className="header-buttons-container">
             {
